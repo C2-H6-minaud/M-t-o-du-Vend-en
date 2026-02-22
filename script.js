@@ -1,3 +1,9 @@
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js');
+    });
+}
+
 const API_KEY = 'af6291a95a09e4ca90d4baa55cbd1798'; 
 
 const depts = {
