@@ -1,4 +1,28 @@
-self.addEventListener('fetch', (event) => {
-    // Ce code permet à l'app de fonctionner hors ligne plus tard
-    event.respondWith(fetch(event.request));
+const CACHE_NAME = 'meteo-v1';
+const ASSETS = [
+  './',
+  './index.html',
+  './forecast.html',
+  './style.css',
+  './script.js',
+  './forecast.js',
+  './manifest.json'
+];
+
+// Installation du Service Worker et mise en cache des fichiers
+self.addEventListener('install', (e) => {
+  e.waitUntil(
+    caches.open(CACHE_NAME).then((cache) => {
+      return cache.addAll(ASSETS);
+    })
+  );
+});
+
+// Stratégie de fetch (permet de fonctionner hors-ligne)
+self.addEventListener('fetch', (e) => {
+  e.respondWith(
+    caches.match(e.request).then((response) => {
+      return response || fetch(e.request);
+    })
+  );
 });
